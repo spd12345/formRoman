@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 70%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+
+        /* Password Strength Meter */
+        .password-strength {
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .password-strength span {
+            flex: 1;
+            height: 8px;
+            background-color: #ddd;
+            margin-right: 5px;
+        }
+
+        .password-strength span.weak {
+            background-color: #ff6666;
+        }
+
+        .password-strength span.medium {
+            background-color: #ffd966;
+        }
+
+        .password-strength span.strong {
+            background-color: #66ff66;
+        }
+    </style>
+</head>
+<body>
+
+<form id="registrationForm">
+    <h1>Fill the Form</h1>
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
+           title="Must contain at least one number, one uppercase, one lowercase letter, and one special character (!@#$%^&*), and at least 8 or more characters"
+           required>
+    <small>Password must be at least 8 characters long and include at least one number, one uppercase, one lowercase letter, and one special character (!@#$%^&*).</small>
+
+    <!-- Password Strength Meter -->
+    <div class="password-strength">
+        <span class="weak"></span>
+        <span class="medium"></span>
+        <span class="strong"></span>
+    </div><br>
+    
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    const passwordInput = document.getElementById('password');
+    const passwordStrengthSpans = document.querySelectorAll('.password-strength span');
+
+    passwordInput.addEventListener('input', updatePasswordStrength);
+
+    function updatePasswordStrength() {
+        const password = passwordInput.value;
+        let strength = 0;
+
+        // Check for at least 8 characters
+        strength += password.length >= 8 ? 1 : 0;
+
+        // Check for at least one uppercase letter
+        strength += /[A-Z]/.test(password) ? 1 : 0;
+
+        // Check for at least one lowercase letter
+        strength += /[a-z]/.test(password) ? 1 : 0;
+
+        // Check for at least one digit
+        strength += /\d/.test(password) ? 1 : 0;
+
+        // Check for at least one special character
+        strength += /[!@#$%^&*]/.test(password) ? 1 : 0;
+
+        // Update the strength indicators
+        passwordStrengthSpans.forEach((span, index) => {
+            if (index < strength) {
+                span.classList.add('strong');
+            } else {
+                span.classList.remove('strong');
+            }
+
+            if (index === 2) {
+                if (strength >= 2) {
+                    span.classList.add('medium');
+                } else {
+                    span.classList.remove('medium');
+                }
+            }
+
+            if (index === 1) {
+                if (strength >= 1) {
+                    span.classList.add('weak');
+                } else {
+                    span.classList.remove('weak');
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
